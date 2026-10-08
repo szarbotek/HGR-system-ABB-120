@@ -56,9 +56,9 @@ class CameraThread(QThread):
         Logs.print(f"CAM: [PROC] Activating image frame grabbing process")
 
         try:
-            while not self.isInterruptionRequested():
-                start_time = time.time()
+            stream_start_time = time.time()
 
+            while not self.isInterruptionRequested():
                 frame_rgb, img_timestamp = self.camera_object.get_image()
 
                 # Skip iteration if no frame is available
@@ -67,15 +67,11 @@ class CameraThread(QThread):
                     continue
 
                 # Calculate frame processing time
-                timestamp_ms = int(abs((start_time - time.time()) * 1000))
+                timestamp_ms = int((time.time() - stream_start_time) * 1000)
 
                 # Emit frames via signals
-                self.SIGNAL_A000_2GUI.emit(
-                    timestamp_ms, frame_rgb.copy()
-                )
-                self.SIGNAL_A001_2MPR.emit(
-                    timestamp_ms, frame_rgb.copy()
-                )
+                self.SIGNAL_A000_2GUI.emit(timestamp_ms, frame_rgb.copy())
+                self.SIGNAL_A001_2MPR.emit(timestamp_ms, frame_rgb.copy())
 
         except Exception as e:
             Logs.print(f"<ERR> Thread execution failed: {e}")

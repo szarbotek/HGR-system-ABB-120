@@ -31,7 +31,7 @@ class NCstaticIconImage(QWidget, NavigationCursor):
 
         self.FLAG_is_object_selected: bool = False
 
-        self._pixmap: QPixmap = QPixmap(path)
+        self._pixmap: QPixmap = QPixmap(str(path))
 
         t0, t1 = size
 

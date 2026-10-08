@@ -1,6 +1,4 @@
 import subprocess
-import sys
-
 
 def main():
     module = "src.ui.gui"
